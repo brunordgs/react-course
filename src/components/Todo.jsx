@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Modal from './Modal';
 import Backdrop from './Backdrop';
+import Modal from './Modal';
 
 export default function Todo(props) {
 	const [showModal, setShowModal] = useState(false);

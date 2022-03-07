@@ -1,5 +1,5 @@
-import styles from './styles.module.css';
 import MainNavigation from '../MainNavigation';
+import styles from './styles.module.css';
 
 export default function Layout(props) {
 	return (
