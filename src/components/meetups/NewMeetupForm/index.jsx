@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import Card from '../../ui/Card';
 import styles from './styles.module.css';
 
-export default function NewMeetupForm() {
+export default function NewMeetupForm(props) {
 	// I'm using refs because I just only care about input value once instead after each change
 	// and I just need it to read input value, I'll not update it or something like that
 	const titleInputRef = useRef();
@@ -20,7 +20,7 @@ export default function NewMeetupForm() {
 			description: descriptionInputRef.current.value,
 		};
 
-		console.log(meetupData);
+		props.onAddMeetup(meetupData);
 	}
 
 	return (

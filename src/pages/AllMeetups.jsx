@@ -1,31 +1,48 @@
+import { useEffect, useState } from 'react';
 import MeetupList from '../components/meetups/MeetupList';
 
-const DUMMY_DATA = [
-	{
-		id: 'm1',
-		title: 'This is a first meetup',
-		image:
-			'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Stadtbild_M%C3%BCnchen.jpg/2560px-Stadtbild_M%C3%BCnchen.jpg',
-		address: 'Meetupstreet 5, 12345 Meetup City',
-		description:
-			'This is a first, amazing meetup which you definitely should not miss. It will be a lot of fun!',
-	},
-	{
-		id: 'm2',
-		title: 'This is a second meetup',
-		image:
-			'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Stadtbild_M%C3%BCnchen.jpg/2560px-Stadtbild_M%C3%BCnchen.jpg',
-		address: 'Meetupstreet 5, 12345 Meetup City',
-		description:
-			'This is a first, amazing meetup which you definitely should not miss. It will be a lot of fun!',
-	},
-];
-
 export default function AllMeetups() {
+	const [isLoading, setIsLoading] = useState(true);
+	const [loadedMeetups, setLoadedMeetups] = useState([]);
+
+	useEffect(() => {
+		setIsLoading(true);
+
+		// Json returns a promise as well, that's why I need to insert other then
+		fetch('https://react-getting-started-10eca-default-rtdb.firebaseio.com/meetups.json')
+			.then((res) => res.json())
+			.then((data) => {
+				// const meetups = [];
+
+				// for (const key in data) {
+				// 	const meetup = {
+				// 		id: key,
+				// 		...data[key],
+				// 	};
+
+				// 	meetups.push(meetup);
+				// }
+
+				// Same as above
+				const meetups = Object.entries(data).map(([key, data]) => ({
+					id: key,
+					...data,
+				}));
+
+				setLoadedMeetups(meetups);
+				setIsLoading(false);
+			})
+			.finally(() => setIsLoading(false));
+	}, []);
+
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
+
 	return (
 		<section>
 			<h1>All Meetups</h1>
-			<MeetupList meetups={DUMMY_DATA} />
+			<MeetupList meetups={loadedMeetups} />
 		</section>
 	);
 }
